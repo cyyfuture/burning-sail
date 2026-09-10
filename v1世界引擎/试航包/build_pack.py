@@ -29,6 +29,9 @@ def main():
     goods = {g["name"]: g for g in json.loads((DATA / "goods.json").read_text(encoding="utf-8"))["goods"]}
     surv = {c["name"]: c for c in json.loads((DATA / "survival.json").read_text(encoding="utf-8"))["cities"]}
     dist = json.loads((DATA / "distances.json").read_text(encoding="utf-8"))["edges"]
+    procs = json.loads((DATA / "processes.json").read_text(encoding="utf-8"))
+    quests = {t["id"]: t for t in json.loads((DATA / "quests.json").read_text(encoding="utf-8"))["quests"]}
+    mats = json.loads((DATA / "qst_materials.json").read_text(encoding="utf-8"))
 
     L = []
     A = L.append
@@ -53,7 +56,7 @@ def main():
     A("# 《燃帆》S1 试航包 —— 1375，威尼斯的账期")
     A("")
     A("> 最小可玩版（8.2.2）：一张纪扉页＋8 城＋4 船＋7 货＋七步卡＋季末卡。够跑 3–5 团的微型战役。")
-    A("> 只带本页＋06/07/10 章速查即可开团；详细规则在 v1世界引擎/ 分册。")
+    A("> 只带本页＋06/07/09/10 章速查即可开团；详细规则在 v1世界引擎/ 分册。")
     A("")
     A("## 纪扉页 · S1 疫火与桨帆（1350–1449）")
     A("")
@@ -94,6 +97,15 @@ def main():
                      f"{s['crew_min']}/{s['crew_max']}", s["speed"], f"{s['price_gold']}金", s["trait"]])
     A(md_table(["型", "船体", "炮位", "货舱", "吃水", "编制", "速", "价", "特性"], rows))
     A("")
+    A("### S1 战斗速查（甲板与炮战）")
+    A("")
+    A("**甲板（9.1）**：无任何手持火器——弓弩与冷兵器的世纪。长弓 1d6／射程20格／每轮可射／列阵2d6（2–3银[确]）｜"
+      "弩 1d8／射程15格／装填1轮／无视1点护甲（5银[评]）｜武装剑 1d8（10银）｜水手刀 1d6（4银）｜链甲 25银（护甲值2）｜"
+      "火瓶 3d6 锥形、敌我不分（3银）。")
+    A("**炮战（04分册4.2 单炮射击条款——齐射战术 S5 才普及）**：每门独立掷 `d20+学识或机敏+炮术` vs 船体14／帆索12／甲板16，"
+      "伤害=炮卡值；同轮第2门起每门−2（上限−6）。轻型射石炮 2d8／装填3轮／炮组3｜重射石炮 3d10／装填4轮／炮组5（剧情级）。"
+      "**S1 海战的主战手段是抢上风、接舷与火攻——炮是吓唬人的。**")
+    A("")
     A("## 7 货（舱位整批价）")
     A("")
     rows = []
@@ -125,6 +137,25 @@ def main():
     A("")
     A("**世界一瞥句例**：'亚历山大的胡椒又贵了——马穆鲁克在囤。'／'老塞缪尔没熬过冬天，酒馆挂出了木牌。'／"
       "'热那亚的桨帆船在罗得岛外海烧了两条船。'")
+    A("")
+    A("## S1 任务速查（P5 任务世界切片）")
+    A("")
+    A("开局激活 3 张进程卡（剧本卡 15 选 3；S1 战役推荐 P01＋P02＋P03）。六要素口诀："
+      "**钩子谁说、误差在哪、目标一句、主隐两障、代价先亮、回报四槽**——六缺一不上桌。")
+    A("")
+    rows = []
+    for p in procs["processes"]:
+        if p["age"] != "S1":
+            continue
+        names = "；".join(f"{quests[qid]['name']}（{quests[qid]['scale']}·{quests[qid].get('pay') or quests[qid].get('_formula')}银）"
+                          for qid in p["quests"])
+        rows.append([p["id"], p["name"], p["window"], p["drama"][:36] + "…", names])
+    A(md_table(["进程", "名", "年窗", "人事尺度", "固定任务（体量·报酬银）"], rows))
+    A("")
+    A("> 报酬公式：10 银×风险(0.5/1/2/4)×时长(单场1/短链2.5/长线8)×技艺(1/1.5/2.5)×稀缺(0.7/1/2)，现金封顶 600 银。"
+      "浮动三源最多启两个；悔约=委托圈恶名+，同区任务降一档一季。")
+    A("随机找活：掷 12 分册 d16 总触发表——S1 可用 15 种泛型（缉私查禁以'私掠反私掠'替代，捕鲸猎鲨 S3+）。"
+      "委托人必有误差（误差库 40 条）；反转掷表＝核心真相，障碍池前两项即天然线索源。")
     A("")
     A("## 样板账（半页）")
     A("")

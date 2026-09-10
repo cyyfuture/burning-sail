@@ -7,8 +7,8 @@
   python build_engine.py --list     # 列出已注册的渲染器与目标
 纪律（沿用调研2 master 的"数据即文本"）:
   - data/*.json 是唯一真源；生成页禁止手改，重跑本脚本覆盖。
-  - 纯表分册（02工资/03生存/04物品/05货物）整页生成，文件头有 [生成页] 标记。
-  - 混合分册（06船/07建筑/09跑商）用 <!-- ENGINE:名 -->…<!-- /ENGINE:名 --> 标记段落注入，
+  - 纯表分册（02工资/03生存/05货物）整页生成，文件头有 [生成页] 标记。
+  - 混合分册（04物品/06船/07建筑/09跑商）用 <!-- ENGINE:名 -->…<!-- /ENGINE:名 --> 标记段落注入，
     标记之外的内容一概不动。
   - 无第三方依赖，仅标准库。
 """
@@ -166,36 +166,36 @@ def render_survival(_deps):
     return "\n".join(lines)
 
 
-# ---------------- ④ 物品纪门控（04 分册整页） ----------------
-@renderer("物品纪门控表", "04_武器与物品五纪表.md", "full")
+# ---------------- ④ 物品纪门控（04 分册注入段——04 为混合分册：战斗纪门控规则手写，表格注入） ----------------
+CAT_ORDER = ["武器·近战", "武器·弓弩", "武器·火器", "武器·舰炮", "护甲", "弹药", "战术", "仪器", "服务"]
+
+
+@renderer("物品纪门控表", "04_武器与物品五纪表.md", "section")
 def render_availability(_deps):
     d = load_json("availability.json")
     if not d:
-        return None
-    lines = ["## 物品 × 纪 三态（无 / 稀缺+50%·购入交易DV13 / 普及）", ""]
-    cats = []
-    for it in d["items"]:
-        if it["cat"] not in cats:
-            cats.append(it["cat"])
+        return "<!-- data/availability.json 缺失，跑 data/build_economy_data.py -->"
+    lines = ["## 4.4 物品 × 纪 三态总表（无 / 稀缺+50%·购入交易DV13 / 普及；括号=该纪价）", ""]
+    cats = [c for c in CAT_ORDER if any(it["cat"] == c for it in d["items"])]
+    cats += [c for c in dict.fromkeys(it["cat"] for it in d["items"]) if c not in cats]
     for cat in cats:
         rows = []
         for it in d["items"]:
             if it["cat"] != cat:
                 continue
-            cells = [it["name"]]
-            for s in ["S1", "S2", "S3", "S4", "S5"]:
-                cells.append(it["states"].get(s, ""))
+            cells = [it["name"], it.get("first_age", "—")]
+            cells += [it["states"].get(s, "") for s in ["S1", "S2", "S3", "S4", "S5"]]
             rows.append(cells)
         lines.append(f"### {cat}")
         lines.append("")
-        lines.append(md_table(["物品", "S1", "S2", "S3", "S4", "S5"], rows))
+        lines.append(md_table(["物品", "首纪", "S1", "S2", "S3", "S4", "S5"], rows))
         lines.append("")
         for it in d["items"]:
             if it["cat"] == cat and it["note"]:
                 lines.append(f"- {it['name']}：{it['note']}" + (f"（{it['note2']}）" if it["note2"] else ""))
         lines.append("")
     lines.append("> 06 章价格原值不动；S1 开局买不到任何手持火器与望远镜。弹药：铅弹 0.1 银/发；"
-                 "火药 0.5 银/发射（S2–S3 稀缺期 ×2）。")
+                 "火药 0.5 银/发射（S2–S3 稀缺期 ×2）。弓弩与 S1–S2 舰炮为 v1 补档，价格锚见分册 4.3 对接条。")
     lines.append("")
     return "\n".join(lines)
 
@@ -376,6 +376,161 @@ def render_strips(_deps):
     lines.append("> 城档：产地0.6/中转0.9/消费1.6/遥远2.2；成交价=基价×城档×库存带×行情骰。"
                  "二级城 GM 按四问法即兴（产地问'周围种什么'/中转问'谁必经'/消费问'谁有钱'/"
                  "孤立问'封锁没有'——30 秒定价）。")
+    return "\n".join(lines)
+
+
+# ---------------- ⑫ 十五进程卡（11 分册注入段） ----------------
+@renderer("进程卡表", "11_历史进程与固定任务.md", "section")
+def render_processes(_deps):
+    d = load_json("processes.json")
+    q = load_json("quests.json")
+    if not d or not q:
+        return "<!-- data/processes.json 或 quests.json 缺失，跑 data/build_quests_data.py -->"
+    pays = {t["id"]: (t.get("pay") or t.get("_formula", 0)) for t in q["quests"]}
+    lines = ["### 11.4 十五进程卡（战役级'剧本卡 15 选 3'，季末激活 3 张）", ""]
+    for p in d["processes"]:
+        lines.append(f"#### {p['id']} {p['name']}（{p['age']}｜{p['window']}）")
+        lines.append("")
+        strip = lambda v, pre: v[len(pre):] if v.startswith(pre) else v
+        rows = [
+            ["地理焦点", p["geo"]], ["经济冲击", p["econ"]], ["势力剧本", p["factions"]],
+            ["PL 侧写", p["pl"]], ["人事尺度", p["drama"]], ["纪推进钩子", strip(p["hook"], "纪推进钩子：")],
+            ["深层锚（洋葱战役）", strip(p["onion"], "深层锚：")],
+        ]
+        lines.append(md_table(["字段", "内容"], rows))
+        lines.append("")
+        qrows = []
+        for qid in p["quests"]:
+            t = next(x for x in q["quests"] if x["id"] == qid)
+            qrows.append([qid, t["name"], t["scale"], f"{pays[qid]} 银", t["tags"][0] + "·" + "·".join(t["tags"][1:])])
+        lines.append("固定任务：")
+        lines.append("")
+        lines.append(md_table(["卡", "名", "体量", "报酬", "标签"], qrows))
+        lines.append("")
+    lines.append("> 经济冲击按季末第⑦步改 prices 档；势力剧本与存留 NPC 入'世界一瞥'（10 分册 §10.5 存留池）；"
+                 "人事尺度=总则：PL 改变不了大历史，但能决定身边人死活。")
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑬ 六十张固定任务卡（11 分册注入段二） ----------------
+@renderer("固定任务卡", "11_历史进程与固定任务.md", "section")
+def render_quests(_deps):
+    d = load_json("quests.json")
+    if not d:
+        return "<!-- data/quests.json 缺失，跑 data/build_quests_data.py -->"
+    lines = ["### 11.5 固定任务卡 60 张（六要素＋三线索；首条线索不掷骰可得）", ""]
+    for t in d["quests"]:
+        f = t.get("_formula")
+        pay = t.get("pay")
+        pay_txt = f"{pay} 银" if pay is not None else f"{f} 银（公式基准）"
+        prem = f"〔戏剧溢价：{t['premium']}〕" if t.get("premium") else ""
+        lines.append(f"#### {t['id']} {t['name']}（{t['scale']}｜{t['risk']}｜{pay_txt}）{prem}")
+        lines.append("")
+        lines.append(f"- **钩子**：{t['hook']}")
+        lines.append(f"- **委托人**：{t['client']}（误差：{t['err']}）")
+        lines.append(f"- **目标**：{t['goal']}")
+        obs = t["obs"][3:] if t["obs"].startswith("主要：") else t["obs"]
+        hid = t["hid"][3:] if t["hid"].startswith("隐藏：") else t["hid"]
+        lines.append(f"- **障碍**：主要——{obs}；隐藏——{hid}")
+        lines.append(f"- **代价**：{t['cost']}")
+        lines.append(f"- **回报**：{t['rew']}")
+        cl = []
+        for i, c in enumerate(t["clues"], 1):
+            free = "〔不掷骰可得〕" if i == 1 else ""
+            cl.append(f"{i} {c[0]}（场景：{c[1]}；被毁后备用：{c[2]}）{free}")
+        lines.append(f"- **三线索**：" + "；".join(cl))
+        if t.get("nodes"):
+            lines.append(f"- **节点图**：{t['nodes']}")
+        lines.append(f"- **标签**：{'·'.join(t['tags'])}｜强度 {t['inten']}｜{t['scar']}")
+        lines.append(f"- **史实**：{t['hist'][3:] if t['hist'].startswith('史实：') else t['hist']}")
+        lines.append("")
+    lines.append("> 接单即立六要素卡（10 分册 §10.1）；GM 可按泛型链（12 分册）在卡面数值上做行情浮动（±25% 交涉带）。")
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑭ 泛型生成卡（12 分册注入段） ----------------
+@renderer("泛型生成卡", "12_随机生成器与素材库.md", "section")
+def render_generics(_deps):
+    d = load_json("qst_materials.json")
+    if not d:
+        return "<!-- data/qst_materials.json 缺失，跑 data/build_quest_materials.py -->"
+    lines = ["### 12.4 d16 总触发表（GM 季末或'玩家找活'时掷；掷出本纪不可用的泛型则就近上移一位）", ""]
+    rows = [[g["no"], g["name"], g["ages"], g["pay_band"], "·".join(g["tags"])] for g in d["generics"]]
+    lines.append(md_table(["d16", "泛型", "可用纪", "报酬带与时限", "默认标签"], rows))
+    lines.append("")
+    lines.append("### 12.5 十六张泛型卡（每卡：委托人池 d6×障碍池 d6×反转池 d6＋六步生成链）")
+    lines.append("")
+    for g in d["generics"]:
+        lines.append(f"#### 泛型{g['no']} {g['name']}（{g['ages']}）")
+        lines.append("")
+        lines.append(f"- **触发环境**：{g['trigger']}")
+        lines.append(f"- **误差倾向**：{g['error']}")
+        lines.append(md_table(["委托人 d6", "障碍池 d6", "反转池 d6"],
+                              [[g["clients"][i], g["obstacles"][i], g["reversals"][i]] for i in range(6)]))
+        lines.append("")
+        lines.append(f"- **报酬带**：{g['pay_band']}｜**风险**：{g['risk_note']}｜**默认标签**：{'·'.join(g['tags'])}")
+        lines.append(f"- **生成链**：{g['chain']}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑮ 素材四库一表（12 分册注入段二） ----------------
+@renderer("素材四库", "12_随机生成器与素材库.md", "section")
+def render_materials(_deps):
+    d = load_json("qst_materials.json")
+    if not d:
+        return "<!-- data/qst_materials.json 缺失，跑 data/build_quest_materials.py -->"
+    lines = ["### 12.6 人名录（14 文化区×姓/名/绰号；对接 13 章港名册，同城连续任务优先复用）", ""]
+    lines.append(md_table(["文化区", "姓", "名", "绰号"],
+                          [[n["区"], n["姓"], n["名"], n["绰号"]] for n in d["names"]]))
+    lines.append("")
+    lines.append("### 12.7 误差库 40 条（委托人陈述必有偏差——掷 d40 或按委托人身份挑用）")
+    lines.append("")
+    errs = d["errors"]
+    rows = [[i + 1, errs[i], i + 21, errs[i + 20]] for i in range(20)]
+    lines.append(md_table(["d40", "误差", "d40", "误差"], rows))
+    lines.append("")
+    lines.append("### 12.8 反转子库 32 条（四族×8；掷出反转＝核心真相，障碍池前两项即天然线索源）")
+    lines.append("")
+    for fam, items in d["reversals"].items():
+        lines.append(f"**{fam}**（掷 d8）")
+        lines.append("")
+        lines.append(md_table(["d8", "反转", "d8", "反转"],
+                              [[i + 1, items[i], i + 5, items[i + 4]] for i in range(4)]))
+        lines.append("")
+    lines.append("### 12.9 地物库 32 条（锚点/礁群/废墟/河口；对接 08 章点阵海图）")
+    lines.append("")
+    pl = d["places"]
+    rows = [[pl[i]["类"], pl[i]["名"], pl[i]["特征"], pl[i + 16]["名"], pl[i + 16]["特征"]] for i in range(16)]
+    lines.append(md_table(["类", "名", "特征", "名", "特征"], rows))
+    lines.append("")
+    pt = d["paytable"]
+    lines.append(f"### 12.10 时限-价钱速查表（{pt['说明']}）")
+    lines.append("")
+    lines.append("")
+    lines.append(md_table(pt["matrix"]["header"], pt["matrix"]["rows"]))
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑯ 八味标签卡（10 分册注入段） ----------------
+@renderer("八味标签", "10_任务原子与价值公式.md", "section")
+def render_tags(_deps):
+    d = load_json("tags.json")
+    if not d:
+        return "<!-- data/tags.json 缺失，跑 data/build_quest_materials.py -->"
+    lines = ["### 10.7.4 八味标签卡（味→定义→素材索引→安全注记）", ""]
+    rows = [[t["味"], t["定义"], t["素材索引"], t["安全"]] for t in d["tags"]]
+    lines.append(md_table(["味", "五味一句", "素材索引", "安全"], rows))
+    lines.append("")
+    for t in d["tags"]:
+        lines.append(f"- **{t['味']}**：{'／'.join(t['旁白'])}")
+    lines.append("")
+    lines.append(f"> 三轴组合写作法：'商战·中·短链'=一桩两天内见分晓的竞标战。强度轴与时长轴：{d['强度轴']['轻']}｜{d['强度轴']['中']}｜{d['强度轴']['重']}。")
+    lines.append(f"> 配平与点单：{d['配平']}")
+    lines.append("")
     return "\n".join(lines)
 
 
