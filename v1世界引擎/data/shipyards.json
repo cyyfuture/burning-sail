@@ -1,0 +1,633 @@
+{
+ "_meta": {
+  "说明": "《燃帆》v1 造船能力矩阵（P2·T1.6.3）：48 一级城 × 五纪 → 等级 0–5。0 无／1 小艇与维修／2 沿岸商船≤100t／3 大洋商船≤300t／4 重型盖伦≤600t／5 特大战舰与东印度船。",
+  "外发条款": "想造超出等级的船：付 60% 定金、工期翻倍、跨季交付（接入 08 部时间博弈）",
+  "工期公式": "工期(月)=吨位÷产能（L2:8t/月 L3:15t/月 L4:25t/月 L5:40t/月）；战时掷 d6 1–2 排期翻倍"
+ },
+ "cities": [
+  {
+   "id": "london",
+   "name": "伦敦",
+   "region": "西欧",
+   "grades": {
+    "S5": 5,
+    "S3": 4,
+    "S4": 4,
+    "S2": 3,
+    "S1": 2
+   },
+   "note": null
+  },
+  {
+   "id": "amsterdam",
+   "name": "阿姆斯特丹",
+   "region": "西欧",
+   "grades": {
+    "S5": 5,
+    "S3": 3,
+    "S2": 3,
+    "S1": 2,
+    "S4": 5
+   },
+   "note": null
+  },
+  {
+   "id": "antwerp",
+   "name": "安特卫普",
+   "region": "西欧",
+   "grades": {
+    "S1": 1,
+    "S2": 2,
+    "S3": 2,
+    "S4": 2,
+    "S5": 2
+   },
+   "note": "默认档（tier3）[评]"
+  },
+  {
+   "id": "paris",
+   "name": "巴黎",
+   "region": "西欧",
+   "grades": {
+    "S1": 0,
+    "S5": 0,
+    "S2": 0,
+    "S3": 0,
+    "S4": 0
+   },
+   "note": null
+  },
+  {
+   "id": "strasbourg",
+   "name": "斯特拉斯堡",
+   "region": "西欧",
+   "grades": {
+    "S1": 1,
+    "S2": 2,
+    "S3": 2,
+    "S4": 2,
+    "S5": 2
+   },
+   "note": "默认档（tier3）[评]"
+  },
+  {
+   "id": "valencia",
+   "name": "瓦伦西亚",
+   "region": "伊比利亚",
+   "grades": {
+    "S1": 1,
+    "S2": 2,
+    "S3": 2,
+    "S4": 2,
+    "S5": 2
+   },
+   "note": "默认档（tier3）[评]"
+  },
+  {
+   "id": "madrid",
+   "name": "马德里",
+   "region": "伊比利亚",
+   "grades": {
+    "S1": 0,
+    "S5": 0,
+    "S2": 0,
+    "S3": 0,
+    "S4": 0
+   },
+   "note": null
+  },
+  {
+   "id": "florence",
+   "name": "佛罗伦萨",
+   "region": "地中海",
+   "grades": {
+    "S1": 1,
+    "S5": 1,
+    "S3": 1,
+    "S2": 1,
+    "S4": 1
+   },
+   "note": null
+  },
+  {
+   "id": "naples",
+   "name": "那不勒斯",
+   "region": "地中海",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "augsburg",
+   "name": "奥格斯堡",
+   "region": "黑海—东欧",
+   "grades": {
+    "S1": 1,
+    "S2": 2,
+    "S3": 2,
+    "S4": 2,
+    "S5": 2
+   },
+   "note": "默认档（tier3）[评]"
+  },
+  {
+   "id": "leipzig",
+   "name": "莱比锡",
+   "region": "黑海—东欧",
+   "grades": {
+    "S1": 0,
+    "S2": 1,
+    "S3": 1,
+    "S4": 1,
+    "S5": 1
+   },
+   "note": "默认档（tier4）[评]"
+  },
+  {
+   "id": "vienna",
+   "name": "维也纳",
+   "region": "黑海—东欧",
+   "grades": {
+    "S1": 1,
+    "S5": 1,
+    "S3": 1,
+    "S2": 1,
+    "S4": 1
+   },
+   "note": null
+  },
+  {
+   "id": "danzig",
+   "name": "但泽",
+   "region": "黑海—东欧",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "warsaw",
+   "name": "华沙",
+   "region": "黑海—东欧",
+   "grades": {
+    "S1": 0,
+    "S2": 1,
+    "S3": 1,
+    "S4": 1,
+    "S5": 1
+   },
+   "note": "默认档（tier4）[评]"
+  },
+  {
+   "id": "krakow",
+   "name": "克拉科夫",
+   "region": "黑海—东欧",
+   "grades": {
+    "S1": 2,
+    "S2": 3,
+    "S3": 3,
+    "S4": 3,
+    "S5": 3
+   },
+   "note": "默认档（tier1）[评]"
+  },
+  {
+   "id": "seville",
+   "name": "塞维利亚",
+   "region": "伊比利亚",
+   "grades": {
+    "S3": 4,
+    "S4": 4,
+    "S5": 3,
+    "S2": 3,
+    "S1": 2
+   },
+   "note": null
+  },
+  {
+   "id": "lisbon",
+   "name": "里斯本",
+   "region": "伊比利亚",
+   "grades": {
+    "S3": 4,
+    "S2": 4,
+    "S4": 4,
+    "S1": 2,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "hamburg",
+   "name": "汉堡",
+   "region": "黑海—东欧",
+   "grades": {
+    "S4": 4,
+    "S1": 3,
+    "S3": 3,
+    "S2": 3,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "copenhagen",
+   "name": "哥本哈根",
+   "region": "黑海—东欧",
+   "grades": {
+    "S4": 4,
+    "S3": 3,
+    "S2": 3,
+    "S1": 2,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "stockholm",
+   "name": "斯德哥尔摩",
+   "region": "黑海—东欧",
+   "grades": {
+    "S4": 4,
+    "S3": 3,
+    "S2": 3,
+    "S1": 2,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "istanbul",
+   "name": "伊斯坦布尔",
+   "region": "黑海—东欧",
+   "grades": {
+    "S3": 4,
+    "S2": 4,
+    "S4": 4,
+    "S5": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "moscow",
+   "name": "莫斯科",
+   "region": "黑海—东欧",
+   "grades": {
+    "S1": 0,
+    "S5": 0,
+    "S2": 0,
+    "S3": 0,
+    "S4": 0
+   },
+   "note": null
+  },
+  {
+   "id": "beijing",
+   "name": "北京",
+   "region": "东亚",
+   "grades": {
+    "S1": 1,
+    "S5": 1,
+    "S3": 1,
+    "S2": 1,
+    "S4": 1
+   },
+   "note": null
+  },
+  {
+   "id": "suzhou",
+   "name": "苏州",
+   "region": "东亚",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "canton",
+   "name": "广州",
+   "region": "东亚",
+   "grades": {
+    "S4": 4,
+    "S1": 3,
+    "S3": 3,
+    "S2": 3,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "kyoto",
+   "name": "京都",
+   "region": "东亚",
+   "grades": {
+    "S1": 1,
+    "S5": 2,
+    "S3": 2,
+    "S4": 2,
+    "S2": 1
+   },
+   "note": null
+  },
+  {
+   "id": "nagasaki",
+   "name": "长崎",
+   "region": "东亚",
+   "grades": {
+    "S2": 2,
+    "S3": 2,
+    "S4": 2,
+    "S5": 1,
+    "S1": 2
+   },
+   "note": null
+  },
+  {
+   "id": "manila",
+   "name": "马尼拉",
+   "region": "东南亚",
+   "grades": {
+    "S4": 3,
+    "S1": 0,
+    "S5": 3,
+    "S3": 3,
+    "S2": 1
+   },
+   "note": null
+  },
+  {
+   "id": "batavia",
+   "name": "巴达维亚",
+   "region": "东南亚",
+   "grades": {
+    "S4": 3,
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "malacca",
+   "name": "马六甲",
+   "region": "东南亚",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "goa",
+   "name": "果阿",
+   "region": "印度洋",
+   "grades": {
+    "S2": 2,
+    "S1": 0,
+    "S3": 4,
+    "S4": 4,
+    "S5": 3
+   },
+   "note": null
+  },
+  {
+   "id": "hormuz",
+   "name": "霍尔木兹",
+   "region": "红海—波斯湾",
+   "grades": {
+    "S2": 2,
+    "S1": 1,
+    "S5": 2,
+    "S3": 2,
+    "S4": 2
+   },
+   "note": null
+  },
+  {
+   "id": "mokha",
+   "name": "摩卡",
+   "region": "红海—波斯湾",
+   "grades": {
+    "S1": 0,
+    "S2": 1,
+    "S3": 1,
+    "S4": 1,
+    "S5": 1
+   },
+   "note": "默认档（tier4）[评]"
+  },
+  {
+   "id": "mexico",
+   "name": "墨西哥城",
+   "region": "加勒比—美洲",
+   "grades": {
+    "S1": 0,
+    "S5": 2,
+    "S2": 0,
+    "S3": 2,
+    "S4": 2
+   },
+   "note": null
+  },
+  {
+   "id": "potosi",
+   "name": "波托西",
+   "region": "加勒比—美洲",
+   "grades": {
+    "S1": 0,
+    "S5": 0,
+    "S2": 0,
+    "S3": 0,
+    "S4": 0
+   },
+   "note": null
+  },
+  {
+   "id": "lima",
+   "name": "利马",
+   "region": "加勒比—美洲",
+   "grades": {
+    "S1": 0,
+    "S5": 2,
+    "S2": 0,
+    "S3": 2,
+    "S4": 2
+   },
+   "note": null
+  },
+  {
+   "id": "havana",
+   "name": "哈瓦那",
+   "region": "加勒比—美洲",
+   "grades": {
+    "S4": 3,
+    "S1": 0,
+    "S5": 3,
+    "S3": 3,
+    "S2": 1
+   },
+   "note": null
+  },
+  {
+   "id": "barbados",
+   "name": "巴巴多斯",
+   "region": "加勒比—美洲",
+   "grades": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "S4": 1,
+    "S5": 1
+   },
+   "note": "默认档（tier4）[评]"
+  },
+  {
+   "id": "bahia",
+   "name": "巴伊亚",
+   "region": "加勒比—美洲",
+   "grades": {
+    "S4": 3,
+    "S1": 0,
+    "S5": 3,
+    "S3": 3,
+    "S2": 1
+   },
+   "note": null
+  },
+  {
+   "id": "venice",
+   "name": "威尼斯",
+   "region": "地中海",
+   "grades": {
+    "S3": 5,
+    "S4": 4,
+    "S2": 5,
+    "S1": 5,
+    "S5": 4
+   },
+   "note": null
+  },
+  {
+   "id": "genoa",
+   "name": "热那亚",
+   "region": "地中海",
+   "grades": {
+    "S4": 3,
+    "S3": 4,
+    "S2": 5,
+    "S5": 3,
+    "S1": 5
+   },
+   "note": null
+  },
+  {
+   "id": "bruges",
+   "name": "布鲁日",
+   "region": "西欧",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "gandu",
+   "name": "甘杜",
+   "region": "东非—西非",
+   "grades": {
+    "S1": 0,
+    "S2": 1,
+    "S3": 1,
+    "S4": 1,
+    "S5": 1
+   },
+   "note": "默认档（tier4）[评]"
+  },
+  {
+   "id": "quanzhou",
+   "name": "泉州",
+   "region": "东亚",
+   "grades": {
+    "S4": 3,
+    "S2": 4,
+    "S3": 4,
+    "S5": 3,
+    "S1": 4
+   },
+   "note": null
+  },
+  {
+   "id": "hangzhou",
+   "name": "杭州",
+   "region": "东亚",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 3
+   },
+   "note": null
+  },
+  {
+   "id": "alexandria",
+   "name": "亚历山大港",
+   "region": "地中海",
+   "grades": {
+    "S5": 2,
+    "S3": 2,
+    "S4": 2,
+    "S2": 3,
+    "S1": 2
+   },
+   "note": null
+  },
+  {
+   "id": "cairo",
+   "name": "开罗",
+   "region": "地中海",
+   "grades": {
+    "S2": 2,
+    "S5": 2,
+    "S3": 2,
+    "S4": 2,
+    "S1": 2
+   },
+   "note": null
+  },
+  {
+   "id": "calicut",
+   "name": "卡利卡特",
+   "region": "印度洋",
+   "grades": {
+    "S4": 3,
+    "S5": 3,
+    "S3": 3,
+    "S2": 3,
+    "S1": 2
+   },
+   "note": null
+  }
+ ]
+}
