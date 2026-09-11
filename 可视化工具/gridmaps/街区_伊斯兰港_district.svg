@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="302" viewBox="0 0 400 302">
+<rect width="400" height="302" fill="#f4ecd8"/>
+<text x="20" y="34" font-size="20" font-weight="bold" fill="#3a3128" font-family="serif">码头街区图 · 伊斯兰港</text>
+<text x="20" y="54" font-size="12" fill="#3a3128" opacity=".7">1 格 = 1.5 米 · 伊斯兰港街区：清真寺院＋巴扎拱廊（对应 C07/C08/C10）</text>
+<rect x="40" y="262" width="320" height="12" fill="#c8d8dc" stroke="#3a3128" stroke-dasharray="4 2"/>
+<text x="42" y="278" font-size="11" fill="#3a3128">水</text>
+<rect x="40" y="70" width="96" height="48" fill="#e8dcc0" stroke="#3a3128" stroke-width="1.2"/>
+<rect x="152" y="70" width="80" height="48" fill="#e8dcc0" stroke="#3a3128" stroke-width="1.2"/>
+<rect x="72" y="134" width="128" height="96" fill="#e8dcc0" stroke="#3a3128" stroke-width="1.2"/>
+<rect x="40" y="246" width="64" height="64" fill="#e8dcc0" stroke="#3a3128" stroke-width="1.2"/>
+<rect x="120" y="262" width="112" height="48" fill="#e8dcc0" stroke="#3a3128" stroke-width="1.2"/>
+<rect x="40" y="134" width="16" height="96" fill="#e8dcc0" stroke="#3a3128" stroke-width="1.2"/>
+<rect x="72" y="134" width="128" height="96" fill="#efe4c5" stroke="#8a6d1f" stroke-dasharray="4 2"/>
+<text x="136.0" y="182.0" font-size="12" text-anchor="middle" fill="#8a6d1f">广场/巴扎</text>
+<g id="grid" opacity="0.55">
+<line x1="40" y1="70" x2="40" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="56" y1="70" x2="56" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="72" y1="70" x2="72" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="88" y1="70" x2="88" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="104" y1="70" x2="104" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="120" y1="70" x2="120" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="136" y1="70" x2="136" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="152" y1="70" x2="152" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="168" y1="70" x2="168" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="184" y1="70" x2="184" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="200" y1="70" x2="200" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="216" y1="70" x2="216" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="232" y1="70" x2="232" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="248" y1="70" x2="248" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="264" y1="70" x2="264" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="280" y1="70" x2="280" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="296" y1="70" x2="296" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="312" y1="70" x2="312" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="328" y1="70" x2="328" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="344" y1="70" x2="344" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="360" y1="70" x2="360" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="70" x2="360" y2="70" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="86" x2="360" y2="86" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="102" x2="360" y2="102" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="118" x2="360" y2="118" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="134" x2="360" y2="134" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="150" x2="360" y2="150" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="166" x2="360" y2="166" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="182" x2="360" y2="182" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="198" x2="360" y2="198" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="214" x2="360" y2="214" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="230" x2="360" y2="230" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="246" x2="360" y2="246" stroke="#b7a98c" stroke-width="0.6"/>
+<line x1="40" y1="262" x2="360" y2="262" stroke="#b7a98c" stroke-width="0.6"/>
+</g>
+</svg>

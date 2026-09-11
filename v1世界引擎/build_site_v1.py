@@ -24,6 +24,7 @@ VOLS_V1 = [
     ("卷一 · 纪 · 经济 · 人口", ["00", "01", "02", "03", "04", "05"]),
     ("卷二 · 船 · 时 · 海 · 商", ["06", "07", "08", "09"]),
     ("卷三 · 任务世界", ["10", "11", "12"]),
+    ("卷四 · 人物 · AI · 文本 · 技艺", ["13", "14", "15", "16"]),
     ("试航包", ["TP"]),
 ]
 
@@ -127,7 +128,8 @@ def main():
     gloss_json = json.dumps(glossary, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     page = bs.TEMPLATE.replace("__CHAPTERS_JSON__", data_json).replace("__GLOSS_JSON__", gloss_json)
     page = customize(page)
-    stamp = "引擎装配于 " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M") + f" · 分册 {len(chapters)} 册 · 数据 15 JSON"
+    stamp = ("引擎装配于 " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+             + f" · 分册 {len(chapters)} 册 · 数据 {len(list((BASE_DIR / 'data').glob('*.json')))} JSON")
     page = page.replace('id="buildStamp"></div>', 'id="buildStamp">' + stamp + "</div>")
     OUT_PATH.write_text(page, encoding="utf-8")
     print(f"OK 生成 {OUT_PATH}")

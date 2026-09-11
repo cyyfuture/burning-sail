@@ -546,6 +546,167 @@ def render_tags(_deps):
     return "\n".join(lines)
 
 
+# ---------------- ⑰ 五轴与组合称号（13 分册注入段） ----------------
+@renderer("五轴与称号", "13_人物系统.md", "section")
+def render_axes_titles(_deps):
+    d = load_json("npcs.json")
+    if not d:
+        return "<!-- data/npcs.json 缺失，跑 data/build_npcs.py -->"
+    lines = ["**五轴定义**（每轴 −2…+2）", ""]
+    lines.append(md_table(["轴", "+2 极", "−2 极"],
+                          [[a["轴"], a["p2"], a["m2"]] for a in d["五轴"]]))
+    lines.append("")
+    lines.append("**组合称号表 20 组**（两轴极值命名；生成见下文）")
+    lines.append("")
+    lines.append(md_table(["组合", "称号", "一眼读人"],
+                          [["、".join(c["combo"]), c["name"], c["read"]] for c in d["组合称号表"]]))
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑱ 具名池名册（14 分册注入段） ----------------
+@renderer("具名池名册", "14_世界AI.md", "section")
+def render_npcs(_deps):
+    d = load_json("npcs.json")
+    f = load_json("factions.json")
+    if not d:
+        return "<!-- data/npcs.json 缺失，跑 data/build_npcs.py -->"
+    fac_names = {}
+    if f:
+        fac_names = {x["id"]: x["name"] for x in f["factions"]}
+    lines = ["### 14.6a 具名池名册（18 名＝12 锚点 + 6 名 S1 起手；三档规则见 13 分册 §13.2.3）", ""]
+    rows = []
+    for n in d["npcs"]:
+        fac = "独立" if n["faction"] == "独立" else fac_names.get(n["faction"], n["faction"])
+        rows.append([n["id"], n["name"], "–".join(n["era"]), n["home"], fac, n["means"], n["ambition"]])
+    lines.append(md_table(["卡", "名", "纪", "驻港", "所属", "手段", "野心"], rows))
+    lines.append("")
+    for n in d["npcs"]:
+        era = "–".join(n["era"])
+        lines.append(f"#### {n['id']} {n['name']}（{era}｜{n['home']}）")
+        lines.append("")
+        ax = " ".join(f"{k}{'+' if v > 0 else ''}{v}" for k, v in n["axes"].items())
+        lines.append(f"- **属性**：{' '.join(f'{k}{v}' for k, v in n['attrs'].items())}"
+                     f"｜**技艺**：{'/'.join(n['skills'])}｜**年龄** {n['age']}｜**手段档** {n['means']}")
+        lines.append(f"- **五轴**：{ax}" + (f"｜**称号**：{n['title']}" if n.get("title") else ""))
+        lines.append(f"- **效用三字段**：野心——{n['ambition']}（类：{n.get('amb_class', '—')}）；处境——{n['situation']}")
+        lines.append(f"- **档案**：{n['blurb']}")
+        lines.append(f"- **秘密**：{n['secret']}")
+        lines.append(f"- **↳ 改**：{n['affects']}")
+        rel = "；".join(f"↔{r['who']}（恩{r['en']} 债{r['zhai']}，{r['last']}）" for r in n["relations"])
+        lines.append(f"- **关系网**：{rel}")
+        if n.get("note"):
+            lines.append(f"- **注**：{n['note']}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑲ 势力档案（14 分册注入段二） ----------------
+@renderer("势力档案", "14_世界AI.md", "section")
+def render_factions(_deps):
+    d = load_json("factions.json")
+    n = load_json("npcs.json")
+    if not d:
+        return "<!-- data/factions.json 缺失，跑 data/build_factions.py -->"
+    npc_names = {}
+    if n:
+        npc_names = {x["id"]: x["name"] for x in n["npcs"]}
+    m = d["_meta"]
+    lines = [f"### 14.6b 势力档案（{m['计数']['势力']} 家纪门控；战役在编 8–12 家按纪窗裁）", ""]
+    rows = []
+    for x in d["factions"]:
+        rows.append([x["id"], x["name"], "–".join(x["ages"]),
+                     x["attrs"]["军"], x["attrs"]["财"], x["attrs"]["谍"],
+                     len(x["assets"]), "、".join(npc_names.get(a_, a_) for a_ in x["anchors"]) or "—"])
+    lines.append(md_table(["id", "势力", "纪窗", "军", "财", "谍", "资产", "锚点NPC"], rows))
+    lines.append("")
+    for x in d["factions"]:
+        lines.append(f"#### {x['name']}（{'–'.join(x['ages'])}｜军{x['attrs']['军']} 财{x['attrs']['财']} 谍{x['attrs']['谍']}）")
+        lines.append("")
+        lines.append(f"- **信条**：{x['creed']}")
+        forms = "；".join(f"{k}={v}" for k, v in x["forms"].items())
+        lines.append(f"- **形态演进**：{forms}")
+        lines.append(md_table(["资产", "门槛", "注"],
+                              [[a_["name"], a_["gate"], a_["note"] or "—"] for a_ in x["assets"]]))
+        lines.append("")
+        lines.append(md_table(["目标", "钟"],
+                              [[g["名"], f"{g['钟']} 格"] for g in x["goals"]]))
+        lines.append("")
+        for k in ("军", "财", "谍"):
+            lines.append(f"- **{k}行动池**：" + "；".join(f"【{a_['名']}】{a_['效']}" for a_ in x["actions"][k]))
+        pl = x["pl_interface"]
+        lines.append(f"- **PL 接口**：受雇——{pl['受雇']}；破坏——{pl['破坏']}；入股——{pl['入股']}")
+        lines.append(f"- **↳ 改什么**：{x['tables']}")
+        if x.get("sandbox"):
+            lines.append(f"- **沙盘因果链（验收案例）**：{x['sandbox']}")
+        if x.get("note"):
+            lines.append(f"- **注**：{x['note']}")
+        lines.append("")
+    lines.append(f"> {m['回合']}")
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ⑳ 语料选目总表（15 分册注入段） ----------------
+@renderer("语料选目", "15_文本渲染库.md", "section")
+def render_catalog(_deps):
+    d = load_json("rhetoric.json")
+    if not d:
+        return "<!-- data/rhetoric.json 缺失，跑 data/build_rhetoric.py -->"
+    lines = [f"**选目总表（{len(d['_meta']['选目'])} 种；'为什么选它'一句）**", ""]
+    rows = [[c["work"], c["author"], c["century"], "–".join(c["ages"]), c["why"]]
+            for c in d["_meta"]["选目"]]
+    lines.append(md_table(["作品", "作家", "世纪", "纪", "为什么选它"], rows))
+    lines.append("")
+    lines.append("> 全部拆解卡带 `[公版原文]`（可核实名句）或 `[技法仿写]`（自写示范句）标注；仅教学引用。")
+    lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ㉑ 拆解卡 40 张（15 分册注入段二） ----------------
+@renderer("拆解卡", "15_文本渲染库.md", "section")
+def render_corpus(_deps):
+    d = load_json("rhetoric.json")
+    if not d:
+        return "<!-- data/rhetoric.json 缺失，跑 data/build_rhetoric.py -->"
+    lines = []
+    for c in d["corpus"]:
+        lines.append(f"#### {c['id']} {c['work']}｜{c['author']}（{c['century']}｜{c['bucket']}｜{'–'.join(c['ages'])}）")
+        lines.append("")
+        lines.append(f"- **摘录**〔{c['quote_type']}〕：{c['excerpt']}")
+        for i, t in enumerate(c["techniques"], 1):
+            lines.append(f"- **技巧{i}**：{t}")
+        lines.append(f"- **跑团用法**：{c['usage']}（挂 **{c['curtain']}**）")
+        lines.append(f"- **改编示例**：{c['demo'].replace('｜', ' 　').replace('｜', ' 　')}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------- ㉒ 世界一瞥句库（16 分册注入段） ----------------
+@renderer("世界一瞥句库", "16_帷幕速查与带团技艺.md", "section")
+def render_glances(_deps):
+    d = load_json("rhetoric.json")
+    g = load_json("qst_materials.json")
+    if not d:
+        return "<!-- data/rhetoric.json 缺失，跑 data/build_rhetoric.py -->"
+    gen_names = {}
+    if g:
+        gen_names = {f"G{x['no']:02d}": f"G{x['no']:02d} {x['name']}" for x in g["generics"]}
+    curtains = {c.split()[0]: c for c in d["_meta"]["帷幕编号"].split("、")}
+    label = lambda ref: curtains.get(ref) or gen_names.get(ref, ref)
+    lines = []
+    for q in ("编年史腔", "酒馆腔", "密报腔"):
+        items = [x for x in d["glances"] if x["腔"] == q]
+        lines.append(f"**{q}**（{len(items)} 条）")
+        lines.append("")
+        lines.append(md_table(["索引", "句"],
+                              [[label(x["ref"]), x["text"]] for x in items]))
+        lines.append("")
+    lines.append("> 索引=C01–C18 帷幕／G01–G16 泛型；季末念三行，每行一个钩子。")
+    lines.append("")
+    return "\n".join(lines)
+
+
 # ---------------- 写入机制 ----------------
 def splice_section(text, name, body):
     """把 body 注入 <!-- ENGINE:name --> … <!-- /ENGINE:name --> 区；无标记则追加到文末。"""
@@ -584,6 +745,12 @@ def build(check_only=False):
         else:  # section
             old = target.read_text(encoding="utf-8") if target.exists() else ""
             open_tag = f"<!-- ENGINE:{r['name']} -->"
+            close_tag = f"<!-- /ENGINE:{r['name']} -->"
+            n_open, n_close = old.count(open_tag), old.count(close_tag)
+            if n_open > 1 or n_close > 1:
+                raise SystemExit(f"标记异常：{r['target']}#{r['name']} 开{n_open}/闭{n_close}——手工修复后再跑")
+            if open_tag in old and close_tag not in old:
+                raise SystemExit(f"未闭合标记：{r['target']}#{r['name']} 缺 {close_tag}——先补配对标记")
             if open_tag in old:
                 import hashlib
                 cur = old.split(open_tag, 1)[1].split(f"<!-- /ENGINE:{r['name']} -->", 1)[0]

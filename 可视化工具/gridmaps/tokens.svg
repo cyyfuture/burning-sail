@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="570" viewBox="0 0 800 570">
+<rect width="800" height="570" fill="#f4ecd8"/>
+<text x="20" y="34" font-size="20" font-weight="bold" fill="#3a3128" font-family="serif">标记物 token 印刷页</text>
+<text x="20" y="54" font-size="12" fill="#3a3128" opacity=".7">1 寸圆片底座：裁剪后贴硬卡。PC 金环 / NPC 灰环 / 状态彩环（≥9 章海战所需）</text>
+<circle cx="60" cy="100" r="30" fill="#f4ecd8" stroke="#8a6d1f" stroke-width="3"/><text x="60" y="104" font-size="11" text-anchor="middle" fill="#3a3128">PC1</text>
+<circle cx="150" cy="100" r="30" fill="#f4ecd8" stroke="#8a6d1f" stroke-width="3"/><text x="150" y="104" font-size="11" text-anchor="middle" fill="#3a3128">PC2</text>
+<circle cx="240" cy="100" r="30" fill="#f4ecd8" stroke="#8a6d1f" stroke-width="3"/><text x="240" y="104" font-size="11" text-anchor="middle" fill="#3a3128">PC3</text>
+<circle cx="330" cy="100" r="30" fill="#f4ecd8" stroke="#8a6d1f" stroke-width="3"/><text x="330" y="104" font-size="11" text-anchor="middle" fill="#3a3128">PC4</text>
+<circle cx="60" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="60" y="204" font-size="11" text-anchor="middle" fill="#3a3128">血鸦</text>
+<circle cx="150" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="150" y="204" font-size="11" text-anchor="middle" fill="#3a3128">阿兰达</text>
+<circle cx="240" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="240" y="204" font-size="11" text-anchor="middle" fill="#3a3128">范德米尔</text>
+<circle cx="330" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="330" y="204" font-size="11" text-anchor="middle" fill="#3a3128">科瓦</text>
+<circle cx="420" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="420" y="204" font-size="11" text-anchor="middle" fill="#3a3128">克鲁兹</text>
+<circle cx="510" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="510" y="204" font-size="11" text-anchor="middle" fill="#3a3128">杜尔</text>
+<circle cx="600" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="600" y="204" font-size="11" text-anchor="middle" fill="#3a3128">霍恩</text>
+<circle cx="690" cy="200" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="690" y="204" font-size="11" text-anchor="middle" fill="#3a3128">银库</text>
+<circle cx="60" cy="290" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="60" y="294" font-size="11" text-anchor="middle" fill="#3a3128">账房</text>
+<circle cx="150" cy="290" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="150" y="294" font-size="11" text-anchor="middle" fill="#3a3128">通事</text>
+<circle cx="240" cy="290" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="240" y="294" font-size="11" text-anchor="middle" fill="#3a3128">帕尔米贾诺</text>
+<circle cx="330" cy="290" r="30" fill="#f4ecd8" stroke="#666" stroke-width="3"/><text x="330" y="294" font-size="11" text-anchor="middle" fill="#3a3128">秘书</text>
+<text x="40" y="390" font-size="13" fill="#3a3128">状态标记：</text>
+<circle cx="60" cy="400" r="30" fill="#f4ecd8" stroke="#a33b2e" stroke-width="3"/><text x="60" y="404" font-size="11" text-anchor="middle" fill="#3a3128">燃烧</text>
+<circle cx="150" cy="400" r="30" fill="#f4ecd8" stroke="#3b6b7a" stroke-width="3"/><text x="150" y="404" font-size="11" text-anchor="middle" fill="#3a3128">进水</text>
+<circle cx="240" cy="400" r="30" fill="#f4ecd8" stroke="#555" stroke-width="3"/><text x="240" y="404" font-size="11" text-anchor="middle" fill="#3a3128">倒地</text>
+<circle cx="330" cy="400" r="30" fill="#f4ecd8" stroke="#8a6d1f" stroke-width="3"/><text x="330" y="404" font-size="11" text-anchor="middle" fill="#3a3128">疲劳</text>
+<circle cx="420" cy="400" r="30" fill="#f4ecd8" stroke="#5a4a6b" stroke-width="3"/><text x="420" y="404" font-size="11" text-anchor="middle" fill="#3a3128">装填</text>
+<circle cx="510" cy="400" r="30" fill="#f4ecd8" stroke="#7a4a3b" stroke-width="3"/><text x="510" y="404" font-size="11" text-anchor="middle" fill="#3a3128">接舷</text>
+<circle cx="600" cy="400" r="30" fill="#f4ecd8" stroke="#4a6b52" stroke-width="3"/><text x="600" y="404" font-size="11" text-anchor="middle" fill="#3a3128">抛锚</text>
+<circle cx="690" cy="400" r="30" fill="#f4ecd8" stroke="#888" stroke-width="3"/><text x="690" y="404" font-size="11" text-anchor="middle" fill="#3a3128">雾隐</text>
+<circle cx="60" cy="490" r="30" fill="#f4ecd8" stroke="#c9a227" stroke-width="3"/><text x="60" y="494" font-size="11" text-anchor="middle" fill="#3a3128">火炮就绪</text>
+</svg>
