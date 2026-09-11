@@ -112,6 +112,21 @@ PLACES = [
     ("河口", "翻船口", "漩涡在右岸，老规矩靠左——新来的总记反"),
 ]
 
+# ---------------- ④b 文化措辞层（T4.3.2.a 验收：同一素材三套措辞 ≥10 组） ----------------
+# 同一件事在 明区／伊斯兰区／欧区 的说法——GM 让 NPC 开口时挑对应区的版本
+CULTURAL_VARIANTS = [
+    ("拒付尾款", "他说等季风来了就结账", "他起誓以先知的名字，下周付清", "他说等东家从月港回来就结"),
+    ("走私暗语", "'南边的葡萄酒'", "'大马士革的玫瑰水'", "'泉州的药材'"),
+    ("委托人身份", "'行会执事'", "'瓦克夫（宗教基金）的管事'", "'牙行的先生'"),
+    ("赌债来源", "'骰子桌上输的'", "'不能提的那种牌'", "'斗蛐蛐欠下的'"),
+    ("过期的情报", "'上个月的港务布告'", "'去岁商队的口信'", "'旧年邸报的消息'"),
+    ("抵押凭据", "'船具行的收据'", "'契约上的指印'", "'当铺的虫蛀票'"),
+    ("誓言担保", "'以圣母起誓'", "'以《古兰经》起誓'", "'对天起誓，祖宗为证'"),
+    ("匿名信", "'塞在门缝的拉丁文'", "'街角咖啡馆的手稿'", "'贴在城门的无名帖'"),
+    ("违禁货的称呼", "'弗里斯兰的灰布'", "'霍尔木兹的枣椰'", "'南京的交换绸'"),
+    ("某人失约", "'坟地里才有他'", "'他朝圣去了'（没人信）", "'回乡扫墓去了'（一去三年）"),
+]
+
 # ---------------- ⑤ 16 泛型卡（T4.3.1 全集） ----------------
 # ages: 可用纪；pay_band: 报酬带（风险×时限）；S1 无缉私/捕鲸（计划 T4.3.1.a 验收）
 GENERIC_NAMES = [
@@ -359,9 +374,21 @@ def main():
     for a in range(16):
         if not (roots[a] - set().union(*[roots[b] for b in range(16) if b != a])):
             errs.append(f"泛型{GENERICS[a]['no']}: 无独有反转")
-    # 文化措辞分层：人名录的绰号列须各区不同（抽查 10 组）
+    # 文化措辞分层：≥10 组且每组三区齐全（T4.3.2.a 验收）
+    if len(CULTURAL_VARIANTS) < 10:
+        errs.append(f"文化措辞 {len(CULTURAL_VARIANTS)} 组 < 10")
+    for item in CULTURAL_VARIANTS:
+        if len(item) != 4 or any(not x for x in item):
+            errs.append(f"文化措辞'{item[0]}': 三区措辞不全")
+    # 人名录绰号列各区不同
     if len({n[3] for n in NAMES}) != len(NAMES):
         errs.append("人名录绰号重复")
+    # 泛型默认标签必须属于八味
+    flavors = {t["味"] for t in TAGS}
+    for g in GENERICS:
+        for tv in g["tags"]:
+            if tv not in flavors:
+                errs.append(f"泛型{g['no']} {g['name']}: 标签'{tv}'不在八味内")
     if errs:
         print("自检未过：")
         for e in errs:
@@ -372,9 +399,11 @@ def main():
                      "审计": {"人名录区数": len(NAMES), "人名录条目": len(NAMES) * 8,
                               "误差库": len(ERRORS), "反转库": sum(len(v) for v in REVERSALS.values()),
                               "地物库": len(PLACES), "泛型卡": len(GENERICS),
+                              "文化措辞组": len(CULTURAL_VARIANTS),
                               "S1 可用泛型": len(s1)}},
            "names": [{"区": n[0], "姓": n[1], "名": n[2], "绰号": n[3]} for n in NAMES],
            "errors": ERRORS,
+           "cultural_variants": [{"素材": c[0], "欧区": c[1], "伊斯兰区": c[2], "明区": c[3]} for c in CULTURAL_VARIANTS],
            "reversals": REVERSALS,
            "places": [{"类": p[0], "名": p[1], "特征": p[2]} for p in PLACES],
            "paytable": {"说明": "报酬银＝基准月值 10 × 风险 × 时长 × 技艺(1/1.5/2.5) × 稀缺(0.7/1/2)，封顶 600；"

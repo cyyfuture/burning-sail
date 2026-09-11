@@ -127,11 +127,11 @@ def main():
     gloss_json = json.dumps(glossary, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     page = bs.TEMPLATE.replace("__CHAPTERS_JSON__", data_json).replace("__GLOSS_JSON__", gloss_json)
     page = customize(page)
-    stamp = "引擎装配于 " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M") + f" · 分册 {len(chapters)} 册 · 数据 11 JSON"
+    stamp = "引擎装配于 " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M") + f" · 分册 {len(chapters)} 册 · 数据 15 JSON"
     page = page.replace('id="buildStamp"></div>', 'id="buildStamp">' + stamp + "</div>")
     OUT_PATH.write_text(page, encoding="utf-8")
     print(f"OK 生成 {OUT_PATH}")
-    print(f"  分册 {len(chapters)} 册，文件大小 {len(page)//1024} KB")
+    print(f"  分册 {len(chapters)} 册，文件大小 {len(page.encode('utf-8'))//1024} KB")
 
 
 if __name__ == "__main__":

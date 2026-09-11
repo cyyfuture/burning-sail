@@ -423,9 +423,11 @@ def render_quests(_deps):
     for t in d["quests"]:
         f = t.get("_formula")
         pay = t.get("pay")
-        pay_txt = f"{pay} 银" if pay is not None else f"{f} 银（公式基准）"
-        prem = f"〔戏剧溢价：{t['premium']}〕" if t.get("premium") else ""
-        lines.append(f"#### {t['id']} {t['name']}（{t['scale']}｜{t['risk']}｜{pay_txt}）{prem}")
+        if pay is not None and pay != f:
+            pay_txt = f"{pay} 银（公式 {f}）"
+        else:
+            pay_txt = f"{f} 银（公式基准）"
+        lines.append(f"#### {t['id']} {t['name']}（{t['scale']}｜{t['risk']}｜{pay_txt}）")
         lines.append("")
         lines.append(f"- **钩子**：{t['hook']}")
         lines.append(f"- **委托人**：{t['client']}（误差：{t['err']}）")
@@ -442,7 +444,11 @@ def render_quests(_deps):
         lines.append(f"- **三线索**：" + "；".join(cl))
         if t.get("nodes"):
             lines.append(f"- **节点图**：{t['nodes']}")
+        if t.get("premium"):
+            lines.append(f"- **溢价/总包**：{t['premium']}（公式基准 {f} 银）")
         lines.append(f"- **标签**：{'·'.join(t['tags'])}｜强度 {t['inten']}｜{t['scar']}")
+        if t.get("lingering"):
+            lines.append(f"- **存留钩**（季末入存留池）：{t['lingering']}")
         lines.append(f"- **史实**：{t['hist'][3:] if t['hist'].startswith('史实：') else t['hist']}")
         lines.append("")
     lines.append("> 接单即立六要素卡（10 分册 §10.1）；GM 可按泛型链（12 分册）在卡面数值上做行情浮动（±25% 交涉带）。")
@@ -491,6 +497,12 @@ def render_materials(_deps):
     errs = d["errors"]
     rows = [[i + 1, errs[i], i + 21, errs[i + 20]] for i in range(20)]
     lines.append(md_table(["d40", "误差", "d40", "误差"], rows))
+    lines.append("")
+    cv = d.get("cultural_variants", [])
+    lines.append(f"### 12.7b 文化措辞层（{len(cv)} 组×三区：GM 让 NPC 开口时挑对应海区的版本）")
+    lines.append("")
+    lines.append(md_table(["素材", "欧区", "伊斯兰区", "明区"],
+                          [[c["素材"], c["欧区"], c["伊斯兰区"], c["明区"]] for c in cv]))
     lines.append("")
     lines.append("### 12.8 反转子库 32 条（四族×8；掷出反转＝核心真相，障碍池前两项即天然线索源）")
     lines.append("")

@@ -143,14 +143,14 @@ def main():
     A("开局激活 3 张进程卡（剧本卡 15 选 3；S1 战役推荐 P01＋P02＋P03）。六要素口诀："
       "**钩子谁说、误差在哪、目标一句、主隐两障、代价先亮、回报四槽**——六缺一不上桌。")
     A("")
-    rows = []
+    qrows = []
     for p in procs["processes"]:
         if p["age"] != "S1":
             continue
         names = "；".join(f"{quests[qid]['name']}（{quests[qid]['scale']}·{quests[qid].get('pay') or quests[qid].get('_formula')}银）"
                           for qid in p["quests"])
-        rows.append([p["id"], p["name"], p["window"], p["drama"][:36] + "…", names])
-    A(md_table(["进程", "名", "年窗", "人事尺度", "固定任务（体量·报酬银）"], rows))
+        qrows.append([p["id"], p["name"], p["window"], p["drama"][:36] + "…", names])
+    A(md_table(["进程", "名", "年窗", "人事尺度", "固定任务（体量·报酬银）"], qrows))
     A("")
     A("> 报酬公式：10 银×风险(0.5/1/2/4)×时长(单场1/短链2.5/长线8)×技艺(1/1.5/2.5)×稀缺(0.7/1/2)，现金封顶 600 银。"
       "浮动三源最多启两个；悔约=委托圈恶名+，同区任务降一档一季。")
