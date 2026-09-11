@@ -1,2 +1,6 @@
-*.log
+# 本地工具产物
+.mimosa/
 __pycache__/
+*.pyc
+*.bak
+*.log
