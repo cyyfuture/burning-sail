@@ -1,5 +1,2 @@
-# 本地工具产物
-.mimosa/
+*.log
 __pycache__/
-*.pyc
-*.bak
